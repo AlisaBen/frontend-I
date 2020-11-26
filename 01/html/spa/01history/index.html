@@ -1,0 +1,97 @@
+<html>
+<head>
+    <title>history</title>
+    <style>
+        *{
+            margin: 0;
+            border: 0;
+            padding: 0;
+        }
+        ul {
+            display: flex;
+            justify-content: space-around;
+            align-content: center;
+            height: 100px;
+            align-items: center;
+            background: teal;
+        }
+        li {
+            list-style-type: none;
+            width: 500px;
+            height: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-family: -webkit-pictograph;
+            cursor: pointer;
+        }
+        li:hover {
+            background-color: khaki;
+        }
+        li.active {
+            background-color: khaki !important;
+            line-height: 46 !important;
+        }
+
+        ul > p {
+            color: aquamarine;
+        }
+    </style>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+</head>
+<body>
+    <script>
+        // 使用window.onload函数在页面加完完之后执行里面的函数，所以不必担心页面还没有挂载问题
+        // 否则只能将js代码放在下面
+        window.onload = function() {
+            const refreshPage = function(id) {
+                // 刷新页面的函数
+                $(`#${id}`).addClass('active').siblings().removeClass('active');
+                $('section').html(id);
+            }
+            const header = document.getElementById("header");
+            header.addEventListener('click', function(evt) {
+                evt = evt || window.event;
+                const target = evt.srcElement || evt.target
+                switch (target.id) {
+                    case "c1":
+                    case "c2":
+                    case "c3":
+                    case "c4":
+                        history.pushState("", "",target.id)
+                        refreshPage(target.id);
+                        break;
+                    default:
+                        console.log("什么都没有点击到")
+                        break;
+                }
+            })
+            window.onpopstate = function() {
+                console.log(location.pathname) // /c3
+                refreshPage(location.pathname.substring(1))
+            }
+            // window.addEventListener("popstate", function(evt) {
+            //     // 监听页面前进或者后退
+            //     console.log(location.pathname) // /c3
+            //     refreshPage(location.pathname.substring(1))
+            // })
+
+        }
+        
+    </script>
+    <header>
+        <ul id="header">
+            <li id="c1">html/css</li>
+            <p>|</p>
+            <li id="c2">javascript</li>
+            <p>|</p>
+            <li id="c3">react</li>
+            <p>|</p>
+            <li id="c4">webpack</li>
+        </ul>
+    </header>
+    <section>c1</section>
+</body>
+</html>
